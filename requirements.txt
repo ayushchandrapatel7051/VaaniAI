@@ -1,0 +1,23 @@
+# FastAPI & Web
+fastapi
+uvicorn
+python-dotenv
+python-multipart
+
+# AI/LLM Services
+google-generativeai
+boto3
+sarvamai
+
+# Audio Processing
+pydub
+scipy
+numpy
+
+# Utilities
+requests
+aiofiles
+
+# Development
+pytest
+black

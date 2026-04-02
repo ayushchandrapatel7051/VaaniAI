@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaaniAI - Voice-First AI Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF8C33;
+            --primary-light: #FFB366;
+            --success: #10B981;
+            --danger: #EF4444;
+            --bg-primary: #0D0D0E;
+            --bg-secondary: #1A1A1B;
+            --bg-tertiary: #25252D;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --border: #3F3F46;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 32px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(13, 13, 14, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: 'Baloo 2', cursive;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 0 20px rgba(255, 140, 51, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 140, 51, 0.5);
+        }
+
+        .logo span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .logo span:last-child {
+            color: var(--success);
+            font-family: 'Baloo 2', cursive;
+        }
+
+        /* Hamburger Button */
+        .hamburger-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-btn:hover {
+            color: var(--primary);
+        
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 100px;
+            padding: 80px 40px;
+            text-align: center;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 140, 51, 0.1);
+            border: 1px solid rgba(255, 140, 51, 0.3);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #ff7a1a);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(255, 140, 51, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 140, 51, 0.1);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 40px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 44px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 140, 51, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), #ff7a1a);
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .step p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .stat-item h4 {
+            font-size: 32px;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0;
+                padding: 15px 20px;
+            }
+
+            .hamburger-btn {
+                display: block;
+            }
+
+            .hero {
+                margin-top: 150px;
+                padding: 40px 20px;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .features {
+                padding: 40px 20px;
+            }
+
+            .features-grid {
+                gap: 20px;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero, .features, .how-it-works {
+            animation: fa
+            deInUp 0.8s ease;
+        }
+        .cursive {
+            font-family: 'Baloo 2', cursive;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="cursive" style="display: flex; align-items: center; gap: 15px; flex: 1;">
+            <button class="hamburger-btn" style="display: none;"><i class="fas fa-bars"></i></button>
+            <a href="/" class="logo" style="text-decoration: none;">
+                <div class="logo-icon"><i class="fas fa-microphone"></i></div>
+                <span>Vaani</span><span style="color: #FFFFFF; margin-left: 0;font-family: 'Baloo 2', cursive;">AI</span>
+            </a>
+        </div>
+        <a href="/" style="text-decoration: none; color: var(--text-primary); transition: color 0.3s ease; display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 6px; border: 1px solid transparent;">Open App →</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <i class="fas fa-sparkles"></i> Voice-First AI Assistant
+        </div>
+        <h1>Talk. Execute. Accomplish.</h1>
+        <p>Your intelligent voice-first companion for YouTube searches, timers, weather, notes, reminders, calendar events, and more. Just speak or type your command.</p>
+        <div class="cta-buttons">
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-microphone"></i> Open VaaniAI
+            </a>
+            <a href="#features" class="btn btn-secondary">
+                <i class="fas fa-arrow-down"></i> Learn More
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Powerful Features</h2>
+        <p class="section-subtitle">Everything you need in your voice-powered assistant</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fab fa-youtube"></i></div>
+                <h3>YouTube Search</h3>
+                <p>Search and watch videos directly from YouTube</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-search"></i></div>
+                <h3>Google Search</h3>
+                <p>Quick web searches at your voice command</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-hourglass-start"></i></div>
+                <h3>Timers & Stopwatch</h3>
+                <p>Set timers with audio alerts or manual stopwatches</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-cloud-sun"></i></div>
+                <h3>Weather Updates</h3>
+                <p>Real-time weather information at your location</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-sticky-note"></i></div>
+                <h3>Smart Notes</h3>
+                <p>Save and organize your thoughts instantly</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                <h3>Reminders</h3>
+                <p>Never forget important tasks with smart reminders</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-calendar-plus"></i></div>
+                <h3>Google Calendar</h3>
+                <p>Schedule events directly into your calendar</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-download"></i></div>
+                <h3>Export Chats</h3>
+                <p>Download your conversations in JSON, CSV, or TXT</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3>AI Conversations</h3>
+                <p>Chat with AI for any topic when not using direct commands</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-item">
+                <h4>9+</h4>
+                <p>Direct Commands</p>
+            </div>
+            <div class="stat-item">
+                <h4>5+</h4>
+                <p>Languages</p>
+            </div>
+            <div class="stat-item">
+                <h4>Instant</h4>
+                <p>No LLM Latency</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Simple. Fast. Effective.</p>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Speak or Type</h3>
+                <p>Use your voice or type a command like "set timer for 5 minutes"</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Command Detection</h3>
+                <p>VaaniAI instantly recognizes direct commands</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Execute Instantly</h3>
+                <p>No LLM delay - commands execute immediately with results</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Get Results</h3>
+                <p>See beautiful command cards with actionable information</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Made with <i class="fas fa-heart" style="color: var(--primary);"></i> by the VaaniAI team | <a href="/">Back to App</a></p>
+    </footer>
+</body>
+</html>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <i class="fas fa-sparkles"></i> Voice-First AI Assistant
+        </div>
+        <h1>Talk. Execute. Accomplish.</h1>
+        <p>Your intelligent voice-first companion for YouTube searches, timers, weather, notes, reminders, calendar events, and more. Just speak or type your command.</p>
+        <div class="cta-buttons">
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-microphone"></i> Open VaaniAI
+            </a>
+            <a href="#features" class="btn btn-secondary">
+                <i class="fas fa-arrow-down"></i> Learn More
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Powerful Features</h2>
+        <p class="section-subtitle">Everything you need in your voice-powered assistant</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fab fa-youtube"></i></div>
+                <h3>YouTube Search</h3>
+                <p>Search and watch videos directly from YouTube</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-search"></i></div>
+                <h3>Google Search</h3>
+                <p>Quick web searches at your voice command</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-hourglass-start"></i></div>
+                <h3>Timers & Stopwatch</h3>
+                <p>Set timers with audio alerts or manual stopwatches</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-cloud-sun"></i></div>
+                <h3>Weather Updates</h3>
+                <p>Real-time weather information at your location</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-sticky-note"></i></div>
+                <h3>Smart Notes</h3>
+                <p>Save and organize your thoughts instantly</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                <h3>Reminders</h3>
+                <p>Never forget important tasks with smart reminders</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-calendar-plus"></i></div>
+                <h3>Google Calendar</h3>
+                <p>Schedule events directly into your calendar</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-download"></i></div>
+                <h3>Export Chats</h3>
+                <p>Download your conversations in JSON, CSV, or TXT</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3>AI Conversations</h3>
+                <p>Chat with AI for any topic when not using direct commands</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-item">
+                <h4>9+</h4>
+                <p>Direct Commands</p>
+            </div>
+            <div class="stat-item">
+                <h4>5+</h4>
+                <p>Languages</p>
+            </div>
+            <div class="stat-item">
+                <h4>Instant</h4>
+                <p>No LLM Latency</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Simple. Fast. Effective.</p>
+        
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Speak or Type</h3>
+                <p>Use your voice or type a command like "set timer for 5 minutes"</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Command Detection</h3>
+                <p>VaaniAI instantly recognizes direct commands</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Execute Instantly</h3>
+                <p>No LLM delay - commands execute immediately with results</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Get Results</h3>
+                <p>See beautiful command cards with actionable information</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Made with <i class="fas fa-heart" style="color: #FF8C33;"></i> by the VaaniAI team | <a href="/">Back to App</a></p>
+    </footer>
+</body>
+</html>

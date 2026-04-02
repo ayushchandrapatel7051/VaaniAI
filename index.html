@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaaniAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+            <button id="hamburgerBtn" class="hamburger-btn"><i class="fas fa-bars"></i></button>
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-microphone"></i></div>
+                <span>Vaani</span>AI
+            </div>
+        </div>
+        <div class="lang-selector">
+            <button class="lang-chip active" data-lang="unknown"><i class="fas fa-globe"></i> Auto</button>
+            <button class="lang-chip" data-lang="hi-IN">हिंदी</button>
+            <button class="lang-chip" data-lang="kn-IN">ಕನ್ನಡ</button>
+            <button class="lang-chip" data-lang="ta-IN">தமிழ்</button>
+            <button class="lang-chip" data-lang="te-IN">తెలుగు</button>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Chat History</h3>
+                <button id="closeSidebarBtn" class="close-sidebar-btn" title="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <button id="newChatBtn" class="new-chat-btn">
+                <i class="fas fa-plus"></i> New Chat
+            </button>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search conversations..." />
+            </div>
+            <div class="conversations-list" id="conversationsList">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>No conversations yet</p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="chat-container">
+            <div class="chat-box">
+                <div class="chat-header">
+                    <h2><i class="fas fa-comments"></i> Voice Chat</h2>
+                    <div class="pipeline-container" id="pipelineContainer">
+                        <div class="pipeline-stage">
+                            <div class="stage-icon" id="stageSTT"><i class="fas fa-microphone"></i></div>
+                            <div class="stage-label" id="stageLabelSTT">STT</div>
+                        </div>
+                        <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="pipeline-stage">
+                            <div class="stage-icon" id="stageNLP"><i class="fas fa-brain"></i></div>
+                            <div class="stage-label" id="stageLabelNLP">NLP</div>
+                        </div>
+                        <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="pipeline-stage">
+                            <div class="stage-icon" id="stageLLM"><i class="fas fa-lightbulb"></i></div>
+                            <div class="stage-label" id="stageLabelLLM">LLM</div>
+                        </div>
+                        <div class="pipeline-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="pipeline-stage">
+                            <div class="stage-icon" id="stageTTS"><i class="fas fa-volume-up"></i></div>
+                            <div class="stage-label" id="stageLabelTTS">TTS</div>
+                        </div>
+                    </div>
+                    <div class="pipeline-progress"><div class="pipeline-progress-bar" id="progressBar"></div></div>
+                    <div class="pipeline-status" id="pipelineStatus"></div>
+                </div>
+
+                <div class="chat-messages" id="messages"></div>
+
+                <div class="feature-toolbar-input">
+                    <button class="feature-btn-input" title="Open YouTube" onclick="prefillInput('youtube search ')">
+                        <i class="fab fa-youtube"></i>
+                    </button>
+                    <button class="feature-btn-input" title="Google Search" onclick="prefillInput('google ')">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="feature-btn-input" title="Set Timer" onclick="prefillInput('set timer for ')">
+                        <i class="fas fa-hourglass-start"></i>
+                    </button>
+                    <button class="feature-btn-input" title="Weather" onclick="prefillInput('weather')">
+                        <i class="fas fa-cloud-sun"></i>
+                    </button>
+                    <button class="feature-btn-input" title="Notes" onclick="prefillInput('note: ')">
+                        <i class="fas fa-sticky-note"></i>
+                    </button>
+                    <button class="feature-btn-input" title="Reminders" onclick="prefillInput('remind me in ')">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="feature-btn-input" title="Export Chat" onclick="prefillInput('export conversation')">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="feature-btn-input" title="Calendar" onclick="prefillInput('schedule ')">
+                        <i class="fas fa-calendar-plus"></i>
+                    </button>
+                </div>
+
+                <div class="voice-input">
+                    <div class="input-row">
+                        <input type="text" id="textInput" placeholder="Type or press mic to speak...">
+                        <button id="sendBtn" class="send-btn" title="Send"><i class="fas fa-arrow-up"></i></button>
+                        <button class="mic-button" id="micBtn" title="Press to record"><i class="fas fa-microphone"></i></button>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="input-status">
+                        <div class="recording-indicator" id="recordingIndicator"><i class="fas fa-circle"></i> Recording...</div>
+                        <div class="mic-label" id="micLabel">Ready to talk</div>
+                    </div>
+                
+</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
