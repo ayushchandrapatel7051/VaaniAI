@@ -254,10 +254,6 @@ Contributions are welcome! Please:
 4. Push to the branch
 5. Open a Pull Request
 
-## 📄 License
-
-[Add your license information here]
-
 ## 💬 Support
 
 For issues and questions:
